@@ -18,6 +18,18 @@
 
 # cleaner.py -registry REGISTRY -project PROJECT_ID -image IMAGE -n 10
 
-import subprocess
+# import subprocess
 
-subprocess.call(["gcloud", "config", "list"])
+# # subprocess.call(["gcloud", "config", "list"])
+#
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-r', '--registry', required=True, help='Registry Name')
+parser.add_argument('-p', '--project', required=True, help='Project ID')
+parser.add_argument('-i', '--image', required=True, help='Image Name')
+
+args = parser.parse_args()
+
+print("Registry:{}, project:{}, Image:{}".format(
+    args.registry, args.project, args.image))
