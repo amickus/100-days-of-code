@@ -17,3 +17,7 @@
 
 
 # cleaner.py -registry REGISTRY -project PROJECT_ID -image IMAGE -n 10
+
+import subprocess
+
+subprocess.call(["gcloud", "config", "list"])

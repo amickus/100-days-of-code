@@ -9,3 +9,6 @@ Started GCR image cleaner
 
 ### R1D2
 Switching to Python3.6 and checking out main differences. GCR API documentation for python SDK is non existent
+
+### R1D3
+Researching GCR APIs, as at the moment the only option seems to be subprocess
