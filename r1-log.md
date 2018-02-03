@@ -15,3 +15,6 @@ Researching GCR APIs, as at the moment the only option seems to be subprocess
 
 ### R1D4
 R1D4 refresh on argparse
+
+### R1D5
+R1D5 trying to use json module to put gcr container data to dictionary
