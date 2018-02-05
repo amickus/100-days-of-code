@@ -21,3 +21,6 @@ R1D5 trying to use json module to put gcr container data to dictionary
 
 ### R1D6
 R1D6 Subprocess.Popen
+
+### R1D7
+R1D7 GCR registry cleaner script finished, moving to another mini project with boto3

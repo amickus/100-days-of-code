@@ -2,45 +2,61 @@
 
 import argparse
 import subprocess
-import json
+import time
+
+# @TODO remove gcloud
+# @TODO add authentication
 
 
-# gcloud container images list-tags REGISTRY/PROJECT_ID/IMAGE
-# gcloud container images list-tags REGISTRY/PROJECT_ID/IMAGE --limit=9999 /
-# --format='get(digest)' | tail -n +10
+def extract_images(image_fqdn):
 
-# gcloud container images delete eu.gcr.io/XX/gcp-microservice-1@sha256:6e7a69dd2127b28fb01369e623d5708131621ed4814f361d8a84fd9682ba9d94 /
-# --force-delete-tags --quiet
-# or
-# gcloud container images delete eu.gcr.io/XX/gcp-microservice-1:1.0.0-170 --force-delete-tags --quiet
-# cleaner.py -registry REGISTRY -project PROJECT_ID -image IMAGE -n 10
-
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-r', '--registry', required=True, help='Registry Name')
-parser.add_argument('-p', '--project', required=True, help='Project ID')
-parser.add_argument('-i', '--image', required=True, help='Image Name')
-
-args = parser.parse_args()
-
-print("Registry:{}, project:{}, Image:{}".format(
-    args.registry, args.project, args.image))
-
-image_fqdn = "/".join([args.registry, args.project, args.image])
-
-# image_fqdn = args.registry + args.project + args.image
-# print(image_fqdn)
-cmd = "gcloud container images list-tags " + \
-    image_fqdn + " --limit=9999 --format=json"
-print(cmd)
-in_json = subprocess.call(cmd, shell=True)
-
-# @TODO remove return code 0 from subprocess call
+    cmd = "gcloud container images list-tags " + \
+        image_fqdn + \
+        " --limit=9999 --format='get(digest, tags, timestamp[datetime])'"
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    output = proc.stdout.read().decode("utf-8")
+    listed_output = output.strip().split('\n')
+    # create a list of lists with image details
+    detailed_list = [i.split("\t") for i in listed_output]
+    return detailed_list
 
 
-print(in_json)
+def clean_images(image_list, image_fqdn):
+    sorted_list = sorted(image_list, key=lambda x: x[2], reverse=True)
+    print("TOTAL NUMBER OF IMAGES:", len(image_list))
+    if len(image_list) <= 4:
+        print("NOTHING TO DELETE")
+    for i in sorted_list:
+        delete_cmd = "gcloud container images delete " + \
+            image_fqdn + "@" + i[0] + " --force-delete-tags --quiet"
+        # Leave 5 newest images and delete the rest
+        if sorted_list.index(i) < 5:
+            print("NOT Deleting: ", i[1])
+        else:
+            print("Deleting: ", i[1])
+            subprocess.Popen(delete_cmd, shell=True)
+            time.sleep(5)
+            print("DONE")
+            print("****")
 
-# subprocess.Popen('ls -la', shell=True)
 
-# out_json = json.loads('in_json')
-# print(out_json)
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-r', '--registry', required=True,
+                        help='Registry Name')
+    parser.add_argument('-p', '--project', required=True, help='Project ID')
+    parser.add_argument('-i', '--image', required=True, help='Image Name')
+
+    args = parser.parse_args()
+    image_fqdn = "/".join([args.registry, args.project, args.image])
+
+    print("Registry:{}, project:{}, Image:{}".format(
+        args.registry, args.project, args.image))
+
+    all_images = extract_images(image_fqdn)
+
+    clean_images(all_images, image_fqdn)
+
+
+if __name__ == '__main__':
+    main()
