@@ -18,3 +18,6 @@ R1D4 refresh on argparse
 
 ### R1D5
 R1D5 trying to use json module to put gcr container data to dictionary
+
+### R1D6
+R1D6 Subprocess.Popen

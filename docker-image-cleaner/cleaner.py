@@ -28,16 +28,19 @@ print("Registry:{}, project:{}, Image:{}".format(
 
 image_fqdn = "/".join([args.registry, args.project, args.image])
 
-# image_fqdn=args.registry + args.project + args.image
+# image_fqdn = args.registry + args.project + args.image
 # print(image_fqdn)
-# subprocess.call(["echo", "gcloud", "container",
-#                  "images", "list-tags", image_fqdn, "--limit=9999", "--format='get(digest)'"])
+cmd = "gcloud container images list-tags " + \
+    image_fqdn + " --limit=9999 --format=json"
+print(cmd)
+in_json = subprocess.call(cmd, shell=True)
 
 # @TODO remove return code 0 from subprocess call
-in_json = subprocess.call(["gcloud", "container",
-                           "images", "list-tags", image_fqdn, "--limit=9999",  "--format=json"]).strip()
+
 
 print(in_json)
+
+# subprocess.Popen('ls -la', shell=True)
 
 # out_json = json.loads('in_json')
 # print(out_json)
