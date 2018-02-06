@@ -24,3 +24,6 @@ R1D6 Subprocess.Popen
 
 ### R1D7
 R1D7 GCR registry cleaner script finished, moving to another mini project with boto3
+
+### R1D8
+R1D8 Boto3 sqs
