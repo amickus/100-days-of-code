@@ -27,3 +27,6 @@ R1D7 GCR registry cleaner script finished, moving to another mini project with b
 
 ### R1D8
 R1D8 Boto3 sqs
+
+### R1D9
+R1D9 image number param in cleaner
