@@ -30,3 +30,6 @@ R1D8 Boto3 sqs
 
 ### R1D9
 R1D9 image number param in cleaner
+
+### R1D10
+R1D10 flask and docker
