@@ -1,3 +1,0 @@
-- python boto sqs?
-- python lambda?
-- flask interface to upload file to S3
