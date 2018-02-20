@@ -36,3 +36,6 @@ R1D10 flask and docker
 
 ### R1D11
 R1D11 flask and docker 2
+
+### R1D12
+R1D12 Boto3 and sqs
