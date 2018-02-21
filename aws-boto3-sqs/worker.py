@@ -1,6 +1,7 @@
 #!/usr/bin/env Python3
 
 import boto3
+import time
 
 # Get the service resource
 sqs = boto3.resource('sqs', region_name='eu-west-1')
@@ -11,11 +12,19 @@ sqs = boto3.resource('sqs', region_name='eu-west-1')
 
 # Get the queue. This returns an SQS.Queue instance
 queue = sqs.get_queue_by_name(QueueName='auri-sqs-test')
+# queue = sqs.get_queue_by_name(QueueName='auri-demo-02-image-processor')
 
-# You can now access identifiers and attributes
-# print(queue.url)
+# Create a new message
+# response = queue.send_message(MessageBody='test1')
 
-# Process messages by printing out body and optional author name
-for message in queue.receive_messages():
-    print(message.body)
-    message.delete
+# The response is NOT a resource, but gives you a message ID and MD5
+# print(response.get('MessageId'))
+# print(response.get('MD5OfMessageBody'))
+
+
+while 1:
+    messages = queue.receive_messages(WaitTimeSeconds=5)
+    for message in messages:
+        print("Message Deleted: {0}".format(message.body))
+        message.delete()
+        time.sleep(1)
