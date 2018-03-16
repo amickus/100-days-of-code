@@ -5,6 +5,7 @@ import time
 import json
 import requests
 # import shutil
+import config
 
 
 def processor(message):
@@ -24,9 +25,10 @@ def list_queues():
 
 def main():
     # @TODO pass region and queeu name as variables
-    region = 'eu-west-1'
-    queue_name = 'auri-sqs-test'
-
+    region = config.CONFIG['region']
+    queue_name = config.CONFIG['queue_name']
+    print(region)
+    print(queue_name)
     # Get the service resource
     sqs = boto3.resource('sqs', region_name=region)
 
