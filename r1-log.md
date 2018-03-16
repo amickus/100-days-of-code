@@ -48,3 +48,6 @@ R1D14 Boto3, sqs, json
 
 ### R1D1
 R1D1 requests to download file
+
+### R1D2
+R1D2 Add config file
